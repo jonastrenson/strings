@@ -1,5 +1,6 @@
 package strings;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
@@ -10,17 +11,50 @@ import java.util.stream.IntStream;
 public class String {
 	
 	/**
+	 * @invar | characters != null
+	 * 
+	 * @respresentationObject
+	 */
+	private char[] characters;
+	
+	
+	/**
 	 * @post | 0 <= result
 	 */
 	public int length() {
-		throw new RuntimeException("Not yet implemented");
+		return characters.length;
 	}
 	
 	/**
 	 * @pre | 0 <= index && index < length()
 	 */
 	public char charAt(int index) {
-		throw new RuntimeException("Not yet implemented");
+		return characters[index];
+	}
+	
+	/**
+	 * @post | result != null
+	 * @post | result.length == length()
+	 * @post | IntStream.range(0, length()).allMatch(i -> result[i] == charAt(i))
+	 */
+	public char[] toCharArray() {
+		return characters.clone();
+	}
+	
+	
+	private String(char[] characters) {
+		this.characters = characters;
+	}
+	
+	/**
+	 * @pre | characters != null
+	 * @inspects | characters
+	 * @post | result != null
+	 * @post | Arrays.equals(result.toCharArray(), characters)
+	 */
+	public static String valueOf(char[] characters) {
+		return new String(characters.clone());
+		
 	}
 	
 	
@@ -31,7 +65,7 @@ public class String {
 	 * @post | result != null
 	 */
 	public static String valueOf(char c) {
-		throw new RuntimeException("Not yet implemented");
+		return new String(new char[] {c});
 	}
 	
 	
@@ -43,7 +77,16 @@ public class String {
 	 * @post | IntStream.range(0, other.length()).allMatch(i -> result.charAt(length() + i) == other.charAt(i))
 	 */
 	public String concat(String other) {
-		throw new RuntimeException("Not yet implemented");
+		char[] newChars = new char[characters.length + other.characters.length];
+		System.arraycopy(characters, 0, newChars, 0, characters.length);
+		System.arraycopy(other.characters, 0, newChars, characters.length, other.characters.length);
+		return new String(newChars);
+		
 	}
+	
+	
+	
+	
+	
 	
 }
